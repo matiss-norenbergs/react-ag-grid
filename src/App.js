@@ -1,25 +1,97 @@
-import logo from './logo.svg';
-import './App.css';
+import AgGrid from "./agGrid"
+
+import styles from "./App.module.css"
+
+const columnDefs = [
+    {
+        headerClass: styles["select-header"],
+        field: "select",
+        checkboxSelection: true,
+        width: 40
+    },
+    {
+        field: "name",
+        headerName: "Name"
+    },
+    {
+        field: "surname",
+        headerName: "Surname"
+    },
+    {
+        field: "date",
+        headerName: "Date"
+    }
+]
+
+const gridData = [
+    {
+        id: "1",
+        name: "Jeff",
+        surname: "Bloom",
+        date: "22.02.2024"
+    },
+    {
+        id: "2",
+        name: "Bob",
+        surname: "the builder",
+        date: "22.02.2024"
+    },
+    {
+        id: "3",
+        name: "Jennie",
+        surname: "Marvel",
+        date: "22.02.2024"
+    },
+    {
+        id: "4",
+        name: "Kate",
+        surname: "Surname",
+        date: "22.02.2024"
+    },
+    {
+        id: "5",
+        name: "Trevor",
+        surname: "Surname",
+        date: "22.02.2024"
+    },
+]
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const getContextMenuItems = (props) => {
+        console.log(props.node?.data)
+
+        const isRowSelected = !!props.node
+
+        const contextMenu = [
+            {
+                name: 'Create'
+            },
+        ]
+
+        if (isRowSelected) {
+            contextMenu.push(
+                {
+                    name: 'Edit'
+                },
+                {
+                    name: 'Delete'
+                }
+            )
+        }
+        
+        return contextMenu
+    }
+
+    return (
+        <div className={styles["wrapper"]}>
+            <AgGrid
+                columnDefs={columnDefs}
+                data={gridData}
+                getContextMenuItems={getContextMenuItems}
+            />
+        </div>
+    )
 }
 
-export default App;
+export default App
